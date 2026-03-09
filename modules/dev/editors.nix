@@ -23,7 +23,7 @@ in
       nixd
     ];
     hm-activation = true;
-    backup = true;
+    backup = false;
   };
 
   home.activation.setupNvm = lib.hm.dag.entryAfter ["writeBoundary"] ''
