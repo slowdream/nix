@@ -16,16 +16,16 @@
 
   outputs = inputs@{ nixpkgs, home-manager, ... }:
     let
-      system = "x86_64-linux";   # замените на aarch64-linux, если нужно
+      system = "x86_64-linux";
+      username = "slowdream";
+      host = "server";
       pkgs = nixpkgs.legacyPackages.${system};
     in {
       homeConfigurations = {
-        "slowdream@server" = home-manager.lib.homeManagerConfiguration {
+        "${username}@${host}" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          extraSpecialArgs = { inherit inputs; };
-          modules = [
-            ./hosts/server/home.nix
-          ];
+          extraSpecialArgs = { inherit inputs username host; };
+          modules = [ ./hosts/server/home.nix ];
         };
       };
     };
