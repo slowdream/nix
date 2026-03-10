@@ -10,7 +10,9 @@ let
 in
 {
   imports = [
-    inputs.nix4nvchad.homeManagerModule
+    (import "${inputs.nix4nvchad}/nix/module.nix" {
+      starterRepo = ./nvchad-starter;
+    })
   ];
 
   programs.nvchad = {
