@@ -11,10 +11,15 @@
 
   home.packages = with pkgs; [
     git
+    gnutar
     htop
+    zellij
+    unzip
   ];
 
   home.sessionVariables = {
     EDITOR = "nvim";
   };
+
+  home.file.".config/zellij/config.kdl".source = ../home/zellij/config.kdl;
 }
