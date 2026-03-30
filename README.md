@@ -68,10 +68,10 @@ nix run home-manager -- switch --flake ~/.config/home-manager#slowdream@server
 ├─ flake.nix
 ├─ flake.lock
 ├─ hosts/
-│  ├─ laptop-zenbook/
+│  ├─ laptop/
 │  │  ├─ home.nix          # "склейка" ролей + точечные оверрайды
 │  │  └─ hardware.nix      # если нужно (чаще в NixOS, но можно держать рядом)
-│  └─ work-pc/
+│  └─ home-pc/
 │     └─ home.nix
 ├─ roles/
 │  ├─ base.nix             # must-have: git, zsh, ssh, editors
@@ -81,8 +81,6 @@ nix run home-manager -- switch --flake ~/.config/home-manager#slowdream@server
 ├─ modules/
 │  ├─ shell/
 │  │  ├─ zsh.nix
-│  │  ├─ starship.nix      # или p10k.nix
-│  │  └─ tmux.nix
 │  ├─ dev/
 │  │  ├─ git.nix
 │  │  ├─ direnv.nix
@@ -94,15 +92,9 @@ nix run home-manager -- switch --flake ~/.config/home-manager#slowdream@server
 ├─ home/
 │  ├─ .gitconfig           # если проще хранить как файл
 │  ├─ zsh/
-│  │  └─ aliases.zsh
-│  └─ config/
-│     └─ ...               # файлы для xdg.configFile
-├─ lib/
-│  ├─ mkHost.nix           # хелперы сборки конфигов
-│  └─ defaults.nix
-└─ pkgs/
-   ├─ overlay.nix
-   └─ my-tools/
+│  │  └─ p10k.zsh
+│  └─ zellij/
+│     └─ config.kdl
 ```
 
 ## Принцип: host-файлы должны быть «тонкими»
