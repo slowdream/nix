@@ -43,6 +43,16 @@ home-manager switch --flake .#slowdream@server
 nix run home-manager -- switch --flake ~/.config/home-manager#slowdream@server
 ```
 
+### Shell и «окружение не изменилось»
+
+Home Manager настраивает **и zsh, и bash**: после `switch` появляются управляемые `~/.zshrc` и `~/.bashrc` (PATH Nix, nvm и т.д.). Если раньше был включён только zsh, интерактивный **bash** выглядел «пустым» — это ожидаемо.
+
+Нужен **новый** сеанс оболочки (новое окно терминала, `exec bash`, `source ~/.bashrc` / `source ~/.zshrc`), иначе старый процесс не подхватит файлы.
+
+Login shell в дистрибутиве по умолчанию часто остаётся bash; чтобы при входе в систему сразу был zsh: `chsh -s "$(command -v zsh)"`.
+
+На машине, где уже лежит **чужой** `~/.bashrc` (не ссылка на генерацию HM), первый `switch` может споткнуться о конфликт — сохрани копию и убери файл или запусти, например, `home-manager switch --flake .#slowdream@server -b backup`.
+
 ## Другие команды
 
 - **Проверка конфигурации** (без применения):
@@ -111,7 +121,7 @@ nix run home-manager -- switch --flake ~/.config/home-manager#slowdream@server
 
 Хорошо:
 
-`modules/shell/zsh.nix` отвечает только за zsh (плагины, алиасы, initExtra…)
+`modules/shell/zsh.nix` — zsh и bash (плагины zsh, алиасы, init, nvm в обоих шеллах)
 
 `modules/dev/git.nix` отвечает только за git
 

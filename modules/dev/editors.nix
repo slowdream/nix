@@ -42,13 +42,4 @@ in
       nvm alias default 'lts/*'
     fi
   '';
-
-  programs.zsh = {
-    initContent = ''
-      export NVM_DIR="$HOME/.nvm"
-      export TMPDIR="''${TMPDIR:-/tmp}"
-      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    '';
-    oh-my-zsh.plugins = [ "git" "nvm" ];
-  };
 }

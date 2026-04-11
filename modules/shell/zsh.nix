@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, username, host, ... }:
 let
   artisan-src = pkgs.fetchgit {
     url = "https://github.com/jessarcher/zsh-artisan.git";
@@ -23,13 +23,18 @@ in
       ll = "ls -l";
       update = "sudo nixos-rebuild switch";
       sail = "sh $([ -f sail ] && echo sail || echo vendor/bin/sail)";
-      hm = "home-manager switch --flake ~/.config/home-manager#slowdream@server";
+      hm = "home-manager switch --flake ~/.config/home-manager#${username}@${host}";
     };
     history.size = 10000;
 
     initContent = ''
-      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+      if [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+      fi
       [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+      export NVM_DIR="$HOME/.nvm"
+      export TMPDIR="''${TMPDIR:-/tmp}"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     '';
 
     plugins = [
@@ -46,7 +51,17 @@ in
 
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" ];
+      plugins = [ "git" "nvm" ];
     };
+  };
+
+  programs.bash = {
+    enable = true;
+    enableCompletion = true;
+    bashrcExtra = ''
+      export NVM_DIR="$HOME/.nvm"
+      export TMPDIR="''${TMPDIR:-/tmp}"
+      [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    '';
   };
 }
