@@ -5,6 +5,9 @@ let
     rev = "HEAD";
     sha256 = "sha256-O0Tn9zQWR0i7UWJ9VtOvxjqpqz9Sj7aKogdHZSOATC0=";
   };
+
+  hmFlake = "~/.config/home-manager#${username}@${host}";
+  hmSwitch = "HOME_MANAGER_BACKUP_OVERWRITE=1 home-manager switch -b hm-bak --flake ${hmFlake}";
 in
 {
   home.file.".p10k.zsh".source = ../../home/zsh/p10k.zsh;
@@ -23,7 +26,7 @@ in
       ll = "ls -l";
       update = "sudo nixos-rebuild switch";
       sail = "sh $([ -f sail ] && echo sail || echo vendor/bin/sail)";
-      hm = "home-manager switch --flake ~/.config/home-manager#${username}@${host}";
+      hm = hmSwitch;
     };
     history.size = 10000;
 
@@ -58,7 +61,15 @@ in
   programs.bash = {
     enable = true;
     enableCompletion = true;
+    shellAliases = {
+      ll = "ls -l";
+      hm = hmSwitch;
+    };
     bashrcExtra = ''
+      if [[ $- == *i* ]] && [[ -z ''${ZSH_VERSION-} ]] && command -v zsh >/dev/null 2>&1; then
+        export SHELL="$(command -v zsh)"
+        exec zsh
+      fi
       export NVM_DIR="$HOME/.nvm"
       export TMPDIR="''${TMPDIR:-/tmp}"
       [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"

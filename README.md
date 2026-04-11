@@ -34,24 +34,24 @@ experimental-features = nix-command flakes
 
 ```bash
 cd ~/.config/home-manager
-home-manager switch --flake .#slowdream@server
+hm
 ```
 
-Для первого запуска или если home-manager ещё не установлен:
+(`hm` — алиас: `home-manager switch -b hm-bak` и перезапись старого `*.hm-bak` без вопросов.)
+
+Для первого запуска или если `home-manager` ещё не в PATH:
 
 ```bash
-nix run home-manager -- switch --flake ~/.config/home-manager#slowdream@server
+HOME_MANAGER_BACKUP_OVERWRITE=1 nix run home-manager -- switch -b hm-bak --flake ~/.config/home-manager#slowdream@server
 ```
 
 ### Shell и «окружение не изменилось»
 
-Home Manager настраивает **и zsh, и bash**: после `switch` появляются управляемые `~/.zshrc` и `~/.bashrc` (PATH Nix, nvm и т.д.). Если раньше был включён только zsh, интерактивный **bash** выглядел «пустым» — это ожидаемо.
+Home Manager настраивает **и zsh, и bash**. После `switch` интерактивный **bash** сразу делает `exec zsh` (если в PATH есть zsh из профиля HM), поэтому новый терминал с дефолтным bash всё равно оказывается в zsh. Полностью сменить login shell в `/etc/passwd` можно при желании: `chsh -s "$(command -v zsh)"`.
 
-Нужен **новый** сеанс оболочки (новое окно терминала, `exec bash`, `source ~/.bashrc` / `source ~/.zshrc`), иначе старый процесс не подхватит файлы.
+Нужен **новый** сеанс оболочки (новое окно терминала, `source ~/.bashrc` / `source ~/.zshrc`), иначе старый процесс не подхватит файлы.
 
-Login shell в дистрибутиве по умолчанию часто остаётся bash; чтобы при входе в систему сразу был zsh: `chsh -s "$(command -v zsh)"`.
-
-На машине, где уже лежит **чужой** `~/.bashrc` (не ссылка на генерацию HM), первый `switch` может споткнуться о конфликт — сохрани копию и убери файл или запусти, например, `home-manager switch --flake .#slowdream@server -b backup`.
+Новости HM при `switch` отключены (`news.display = silent`). Конфликтующие неуправляемые файлы при `hm` или команде выше уходят в `*.hm-bak` автоматически.
 
 ## Другие команды
 
