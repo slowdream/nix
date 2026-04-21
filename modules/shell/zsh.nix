@@ -23,7 +23,7 @@ in
     syntaxHighlighting.enable = true;
 
     shellAliases = {
-      ll = "ls -l";
+      ll = "ls -la";
       update = "sudo nixos-rebuild switch";
       sail = "sh $([ -f sail ] && echo sail || echo vendor/bin/sail)";
       hm = hmSwitch;
@@ -54,7 +54,7 @@ in
 
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" "nvm" ];
+      plugins = [ "nvm" ];
     };
   };
 
@@ -62,7 +62,7 @@ in
     enable = true;
     enableCompletion = true;
     shellAliases = {
-      ll = "ls -l";
+      ll = "ls -la";
       hm = hmSwitch;
     };
     bashrcExtra = ''
