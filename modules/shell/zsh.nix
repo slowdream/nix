@@ -7,9 +7,12 @@ let
   };
 
   hmFlake = "~/.config/home-manager#${username}@${host}";
-  hmSwitch = "HOME_MANAGER_BACKUP_OVERWRITE=1 home-manager switch -b hm-bak --flake ${hmFlake}";
+  hmSwitch = "home-manager switch --flake ${hmFlake}";
 in
 {
+  home.file.".profile".force = true;
+  home.file.".bashrc".force = true;
+
   home.file.".p10k.zsh".source = ../../home/zsh/p10k.zsh;
 
   home.packages = with pkgs; [
