@@ -75,6 +75,7 @@ in
       fi
       export NVM_DIR="$HOME/.nvm"
       export TMPDIR="''${TMPDIR:-/tmp}"
+      export PATH="$HOME/.local/bin:$PATH"
       [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
     '';
   };
